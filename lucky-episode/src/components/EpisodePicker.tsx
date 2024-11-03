@@ -34,28 +34,28 @@ const EpisodePicker: React.FC<EpisodePickerProps> = ({ tvShowId }) => {
   };
 
   return (
-    <div className="text-center mt-4">
+    <div className="text-center mt-8">
       <button
         onClick={getRandomEpisode}
-        className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition duration-300"
+        className="bg-indigo-500 text-white px-6 py-3 rounded-full hover:bg-indigo-600 transition duration-300 shadow-lg"
       >
         Get Random Episode
       </button>
       {episode && seasonNumber !== null && (
-        <div className="mt-6 p-4 border rounded shadow-lg bg-white">
-          <h2 className="text-2xl font-bold text-gray-800">{episode.name}</h2>
-          <p className="text-lg font-semibold text-gray-500 mt-2">
+        <div className="mt-8 p-6 border rounded-lg shadow-md bg-white">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">{episode.name}</h2>
+          <p className="text-lg font-semibold text-indigo-600">
             Season {seasonNumber}, Episode {episode.episode_number}
           </p>
-          <p className="text-gray-700 mt-3">{episode.overview}</p>
+          <p className="text-gray-700 mt-3 mb-4">{episode.overview}</p>
           {episodeImages.length > 0 ? (
-            <div className="grid grid-cols-2 gap-4 mt-4">
+            <div className="grid grid-cols-2 gap-4">
               {episodeImages.map((path, index) => (
                 <img
                   key={index}
                   src={`https://image.tmdb.org/t/p/w500${path}`}
                   alt={`Still ${index + 1}`}
-                  className="w-full h-48 object-cover rounded"
+                  className="w-full h-40 object-cover rounded-lg shadow-md"
                 />
               ))}
             </div>

@@ -13,19 +13,19 @@ const Home: NextPage = () => {
   const [selectedShow, setSelectedShow] = useState<TVShow | null>(null);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <div className="p-6 bg-white rounded shadow-md w-full max-w-xl">
-        <h1 className="text-3xl font-bold mb-4">Random Episode Picker</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-100 to-indigo-100 py-10">
+      <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-2xl">
+        <h1 className="text-4xl font-bold mb-6 text-indigo-700 text-center">Random Episode Picker</h1>
         <SearchBar onShowSelect={setSelectedShow} />
         {selectedShow && (
-          <div className="mt-6">
-            <h2 className="text-2xl font-bold mb-2">{selectedShow.name}</h2>
+          <div className="mt-8 text-center">
+            <h2 className="text-3xl font-semibold mb-4 text-gray-800">{selectedShow.name}</h2>
             {selectedShow.poster_path && (
               <img
                 src={`https://image.tmdb.org/t/p/w500${selectedShow.poster_path}`}
                 alt={selectedShow.name}
-                className="mb-4 w-64 h-96 object-cover rounded"
-                />
+                className="mb-4 w-64 h-96 object-cover rounded-lg mx-auto shadow-md"
+              />
             )}
             <EpisodePicker tvShowId={selectedShow.id} />
           </div>
