@@ -25,6 +25,4 @@ COPY --from=builder /app ./
 
 # Expose the port on which the app will run
 EXPOSE 8080
-
-# Start the Next.js application
-CMD ["npm", "start"]
+CMD ["npm", "start", "-p", "${PORT:-8080}"]
