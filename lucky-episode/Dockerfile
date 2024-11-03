@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy the package files and install dependencies
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci --omit=dev
 
 # Copy the rest of the application code
 COPY . .
@@ -25,4 +25,6 @@ COPY --from=builder /app ./
 
 # Expose the port on which the app will run
 EXPOSE 8080
-CMD ["npm", "start", "-p", "${PORT:-8080}"]
+
+# Start the Next.js application
+CMD ["sh", "-c", "npm start -p ${PORT:-8080} -H 0.0.0.0"]
