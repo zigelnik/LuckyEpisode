@@ -8,12 +8,15 @@ interface EpisodePickerProps {
 
 const EpisodePicker: React.FC<EpisodePickerProps> = ({ tvShowId }) => {
   const [episode, setEpisode] = useState<Episode | null>(null);
+  const [seasonNumber, setSeasonNumber] = useState<number | null>(null);
 
   const getRandomEpisode = async () => {
     try {
       const seasons = await fetchSeasons(tvShowId);
       if (seasons.length > 0) {
         const randomSeason = seasons[Math.floor(Math.random() * seasons.length)];
+        setSeasonNumber(randomSeason.season_number);
+
         const episodes = await fetchRandomEpisode(tvShowId, randomSeason.season_number);
         if (episodes.length > 0) {
           const randomEpisode = episodes[Math.floor(Math.random() * episodes.length)];
@@ -33,9 +36,12 @@ const EpisodePicker: React.FC<EpisodePickerProps> = ({ tvShowId }) => {
       >
         Get Random Episode
       </button>
-      {episode && (
+      {episode && seasonNumber !== null && (
         <div className="mt-4">
           <h2 className="text-2xl font-bold">{episode.name}</h2>
+          <p className="text-gray-600">
+            Season {seasonNumber}, Episode {episode.episode_number}
+          </p>
           <p>{episode.overview}</p>
           {episode.still_path && (
             <img
