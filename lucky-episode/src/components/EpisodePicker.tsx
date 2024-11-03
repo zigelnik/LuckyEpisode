@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { fetchRandomEpisode } from '../utils/apiHelper';
+import { fetchRandomEpisode, fetchSeasons } from '../utils/apiHelper';
 import { Episode } from '../types/tmdbTypes';
 
 interface EpisodePickerProps {
@@ -10,10 +10,18 @@ const EpisodePicker: React.FC<EpisodePickerProps> = ({ tvShowId }) => {
   const [episode, setEpisode] = useState<Episode | null>(null);
 
   const getRandomEpisode = async () => {
-    const episodes = await fetchRandomEpisode(tvShowId);
-    if (episodes.length > 0) {
-      const randomIndex = Math.floor(Math.random() * episodes.length);
-      setEpisode(episodes[randomIndex]);
+    try {
+      const seasons = await fetchSeasons(tvShowId);
+      if (seasons.length > 0) {
+        const randomSeason = seasons[Math.floor(Math.random() * seasons.length)];
+        const episodes = await fetchRandomEpisode(tvShowId, randomSeason.season_number);
+        if (episodes.length > 0) {
+          const randomEpisode = episodes[Math.floor(Math.random() * episodes.length)];
+          setEpisode(randomEpisode);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching random episode:', error);
     }
   };
 
