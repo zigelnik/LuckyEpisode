@@ -13,9 +13,16 @@ const Home: NextPage = () => {
   const [selectedShow, setSelectedShow] = useState<TVShow | null>(null);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-100 to-indigo-100 py-10">
-      <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-2xl">
-        <h1 className="text-4xl font-bold mb-6 text-indigo-700 text-center">Random Episode Picker</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-teal-100 via-white to-blue-200 py-10">
+      <div className="p-6 bg-white/90 backdrop-blur-md rounded-lg shadow-lg w-full max-w-2xl">
+        {/* Replace headline with logo */}
+        <div className="flex justify-center mb-6">
+          <img
+            src="/logo.jpeg" // Update this path to match the actual location of your logo
+            alt="App Logo"
+            className="w-64 h-auto"
+          />
+        </div>
         <SearchBar onShowSelect={setSelectedShow} />
         {selectedShow && (
           <div className="mt-8 text-center">
