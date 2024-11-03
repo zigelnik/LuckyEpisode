@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { fetchRandomEpisode, fetchSeasons } from '../utils/apiHelper';
+import { fetchRandomEpisode, fetchSeasons, fetchEpisodeImages } from '../utils/apiHelper';
 import { Episode } from '../types/tmdbTypes';
 
 interface EpisodePickerProps {
@@ -9,6 +9,7 @@ interface EpisodePickerProps {
 const EpisodePicker: React.FC<EpisodePickerProps> = ({ tvShowId }) => {
   const [episode, setEpisode] = useState<Episode | null>(null);
   const [seasonNumber, setSeasonNumber] = useState<number | null>(null);
+  const [episodeImages, setEpisodeImages] = useState<string[]>([]);
 
   const getRandomEpisode = async () => {
     try {
@@ -21,6 +22,10 @@ const EpisodePicker: React.FC<EpisodePickerProps> = ({ tvShowId }) => {
         if (episodes.length > 0) {
           const randomEpisode = episodes[Math.floor(Math.random() * episodes.length)];
           setEpisode(randomEpisode);
+
+          // Fetch images for the selected episode
+          const images = await fetchEpisodeImages(tvShowId, randomSeason.season_number, randomEpisode.episode_number);
+          setEpisodeImages(images);
         }
       }
     } catch (error) {
@@ -29,26 +34,33 @@ const EpisodePicker: React.FC<EpisodePickerProps> = ({ tvShowId }) => {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center mt-4">
       <button
         onClick={getRandomEpisode}
-        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+        className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600 transition duration-300"
       >
         Get Random Episode
       </button>
       {episode && seasonNumber !== null && (
-        <div className="mt-4">
-          <h2 className="text-2xl font-bold">{episode.name}</h2>
-          <p className="text-gray-600">
+        <div className="mt-6 p-4 border rounded shadow-lg bg-white">
+          <h2 className="text-2xl font-bold text-gray-800">{episode.name}</h2>
+          <p className="text-lg font-semibold text-gray-500 mt-2">
             Season {seasonNumber}, Episode {episode.episode_number}
           </p>
-          <p>{episode.overview}</p>
-          {episode.still_path && (
-            <img
-              src={`https://image.tmdb.org/t/p/w500${episode.still_path}`}
-              alt={episode.name}
-              className="mt-2"
-            />
+          <p className="text-gray-700 mt-3">{episode.overview}</p>
+          {episodeImages.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              {episodeImages.map((path, index) => (
+                <img
+                  key={index}
+                  src={`https://image.tmdb.org/t/p/w500${path}`}
+                  alt={`Still ${index + 1}`}
+                  className="w-full h-48 object-cover rounded"
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 mt-4">No preview images available for this episode.</p>
           )}
         </div>
       )}

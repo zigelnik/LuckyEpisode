@@ -6,6 +6,7 @@ import SearchBar from '../components/SearchBar';
 interface TVShow {
   id: number;
   name: string;
+  poster_path: string | null;
 }
 
 const Home: NextPage = () => {
@@ -17,10 +18,17 @@ const Home: NextPage = () => {
         <h1 className="text-3xl font-bold mb-4">Random Episode Picker</h1>
         <SearchBar onShowSelect={setSelectedShow} />
         {selectedShow && (
-          <>
-            <h2 className="mt-4 text-2xl">{selectedShow.name}</h2>
+          <div className="mt-6">
+            <h2 className="text-2xl font-bold mb-2">{selectedShow.name}</h2>
+            {selectedShow.poster_path && (
+              <img
+                src={`https://image.tmdb.org/t/p/w500${selectedShow.poster_path}`}
+                alt={selectedShow.name}
+                className="mb-4 w-64 h-96 object-cover rounded"
+                />
+            )}
             <EpisodePicker tvShowId={selectedShow.id} />
-          </>
+          </div>
         )}
       </div>
     </div>

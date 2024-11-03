@@ -4,6 +4,7 @@ import { searchTVShows } from '../utils/apiHelper';
 interface TVShow {
   id: number;
   name: string;
+  poster_path: string | null;
 }
 
 interface SearchBarProps {
@@ -29,7 +30,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onShowSelect }) => {
   const handleSelectShow = (show: TVShow) => {
     setQuery(show.name);
     setSuggestions([]);
-    onShowSelect(show); // Pass selected show back to the parent component
+    onShowSelect(show);
   };
 
   return (

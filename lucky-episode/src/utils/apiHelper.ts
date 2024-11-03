@@ -39,6 +39,25 @@ export const fetchRandomEpisode = async (tvShowId: number, seasonNumber: number)
     }
   };
   
+  // Function to fetch images for a specific episode
+export const fetchEpisodeImages = async (tvShowId: number, seasonNumber: number, episodeNumber: number): Promise<string[]> => {
+    try {
+      const response: AxiosResponse<any> = await axios.get(
+        `${TMDB_BASE_URL}/tv/${tvShowId}/season/${seasonNumber}/episode/${episodeNumber}/images`,
+        {
+          params: {
+            api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
+          },
+        }
+      );
+      // Extract image paths from the response (assuming `stills` array is returned)
+      return response.data.stills.map((still: any) => still.file_path).slice(0, 4); // Limit to 4 images
+    } catch (error: any) {
+      console.error('Error fetching episode images:', error);
+      return [];
+    }
+  };
+  
 export const searchTVShows = async (query: string): Promise<any[]> => {
     try {
       const response: AxiosResponse<any> = await axios.get(
